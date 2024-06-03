@@ -1,0 +1,84 @@
+﻿@page "/serverdetails/{Id:int}"
+
+@inject NavigationManager Navigation
+
+<h2 class="page-title">Server Details</h2>
+
+@if (server is not null)
+{
+    <div class="@(server.IsOnline ? "status-online" : "status-offline")">
+        <p>@(server.IsOnline ? "Status - Ok" : "Status - OFFLINE")</p>
+        @if (!server.IsOnline)
+        {
+            <p>@(ServerActionMessage(server.IsOnline))</p>
+        }
+    </div>
+    <div class="server-details">
+        <h2>@server.Name</h2>
+        <img src="@(GenerateServerImage())" width="400px" height="400px" alt="server image" />
+        <p>Based in: @city!.Name - @city.Country</p>
+        <p>Documented outages: @(MockOutageNumber(numberGenerator.Next(0, 10)))</p>
+    </div>
+
+
+}
+else
+{
+    <p class="server-not-found">Unable to find server details...</p>
+    <p>Please double-check your server details and try again or contact support.</p>
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Server? server;
+
+    private City? city;
+
+    private static readonly List<City> cities = CitiesRepository.GetCities();
+
+    private Random numberGenerator = new();
+
+    private static readonly List<string> serverMessages =
+    [
+        "Investigating outage",
+    "Replacing faulty flash component",
+    "Power cable was not connected, booting",
+    "Ordered new flash drive, delivery expected in 2 - 3 working days",
+    "OMG, SNED HELPO ITS DESOTYINH EVERTHING!"
+    ];
+
+    private static readonly List<string> serverImages =
+    [
+        "/images/simple_server.jpg", "/images/simple_server2.jpg", "images/big_server.jpg"
+    ];
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            server = ServersRepository.GetServerById(Id)
+                    ?? throw new ArgumentNullException(nameof(server));
+
+            city = cities.FirstOrDefault(c => c.Name == server.City);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private string ServerActionMessage(bool isOnline)
+    {
+        int message = numberGenerator.Next(0, serverMessages.Count);
+
+        return $"{serverMessages[message]}";
+    }
+
+    private string GenerateServerImage()
+    {
+        int imageNr = numberGenerator.Next(0, serverImages.Count);
+
+        return serverImages[imageNr];
+    }
+
+    private int MockOutageNumber(int number) => number == 9 ? 2 : number == 8 ? 1 : 0;
+}

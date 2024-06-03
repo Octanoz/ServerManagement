@@ -1,0 +1,36 @@
+﻿@page "/servers"
+@using System.Globalization
+
+@inject NavigationManager Navigation
+
+<h2 class="page-title">Servers</h2>
+
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;">
+    @foreach (var city in cities)
+    {
+        <div class="location-card">
+            <img src="@city.Image" width="100px" height="100px" alt="@city.Name" />
+            <button type="button" class="city-button">
+                @city.Name
+            </button>
+        </div>
+    }
+</div>
+
+<ul style="margin: 1rem 0; list-style: none">
+    @foreach (var serv in servers)
+    {
+        <li class="status-wrapper">
+            <p class="server-status-bar" style="background: @(serv.IsOnline ? "olivedrab" : "firebrick")">
+                @serv.Name - status: @(serv.IsOnline ? "online" : "offline") - last checked at @DateTime.Now.Subtract(new TimeSpan(0, 30, 0)).ToString()
+            </p>
+            <a class="server-link" href="/serverdetails/@serv.ServerId">Server Details</a>
+        </li>
+    }
+</ul>
+
+@code {
+    private List<City> cities = CitiesRepository.GetCities();
+    private List<Server> servers = ServersRepository.GetServersByCity("Amsterdam");
+
+}
