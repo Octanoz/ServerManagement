@@ -20,7 +20,7 @@
 .outer {
     padding-top: 4rem;
     min-height: calc(100vh - 4rem);
-    background: linear-gradient(90deg, #F9C2F7, #fafae9 5% 95%, #F9C2F7);
+    background: #fafae9;
 }
 
 .inner-body {

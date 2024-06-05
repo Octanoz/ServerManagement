@@ -1,10 +1,10 @@
-﻿@page "/serverdetails/{Id:int}"
+﻿@page "/serverdetails/{id:int}"
 
-@inject NavigationManager Navigation
+<PageTitle>Server Details</PageTitle>
 
 <h2 class="page-title">Server Details</h2>
 
-@if (server is not null)
+@if (server is not null && city is not null)
 {
     <div class="@(server.IsOnline ? "status-online" : "status-offline")">
         <p>@(server.IsOnline ? "Status - Ok" : "Status - OFFLINE")</p>
@@ -16,7 +16,7 @@
     <div class="server-details">
         <h2>@server.Name</h2>
         <img src="@(GenerateServerImage())" width="400px" height="400px" alt="server image" />
-        <p>Based in: @city!.Name - @city.Country</p>
+        <p>Based in: @city.Name - @city.Country</p>
         <p>Documented outages: @(MockOutageNumber(numberGenerator.Next(0, 10)))</p>
     </div>
 
@@ -27,12 +27,12 @@ else
     <p class="server-not-found">Unable to find server details...</p>
     <p>Please double-check your server details and try again or contact support.</p>
 }
+
 @code {
     [Parameter]
     public int Id { get; set; }
 
     private Server? server;
-
     private City? city;
 
     private static readonly List<City> cities = CitiesRepository.GetCities();
@@ -53,7 +53,7 @@ else
         "/images/simple_server.jpg", "/images/simple_server2.jpg", "images/big_server.jpg"
     ];
 
-    protected override Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
         if (Id > 0)
         {
@@ -62,15 +62,13 @@ else
 
             city = cities.FirstOrDefault(c => c.Name == server.City);
         }
-
-        return Task.CompletedTask;
     }
 
     private string ServerActionMessage(bool isOnline)
     {
         int message = numberGenerator.Next(0, serverMessages.Count);
 
-        return $"{serverMessages[message]}";
+        return serverMessages[message];
     }
 
     private string GenerateServerImage()

@@ -45,7 +45,7 @@ h1:focus {
 .navbar-outer {
     position: fixed;
     color: hsl(302, 36%, 15%);
-    background: linear-gradient(30deg, #F2ECCF, #BCD3F0);
+    background: #BCD3F0;
     box-shadow: 0 1px 2px 0px #ccc;
     width: 100%;
 }
@@ -64,13 +64,13 @@ h1:focus {
     text-decoration: none;
 }
 
-/* page titles */
+/* page headers */
 
 .page-title {
-    margin-top: 1rem;
+    margin-block: 1rem;
 }
 
-/* servers */
+/* servers page */
 
 .location-card {
     display: grid;
@@ -107,7 +107,7 @@ h1:focus {
     color: bisque;
 }
 
-/* server details */
+/* server details page */
 
 .status-online {
     width: fit-content;
@@ -146,3 +146,68 @@ h1:focus {
     .server-details p {
         font-weight: 600;
     }
+
+/* edit server page */
+
+.edit-server-card {
+    display: grid;
+    gap: 0.75rem;
+    width: fit-content;
+    margin-block: 2rem;
+    padding: 0.5rem 1rem;
+    color: navajowhite;
+    border-radius: 10px;
+    background: slategrey;
+    box-shadow: 3px 3px 8px 4px rgb(33 33 33 / 0.5);
+}
+
+    .edit-server-card .card-title {
+        margin-bottom: 1rem;
+    }
+
+    .edit-server-card .label :first-child {
+        font-weight: 600;
+    }
+
+    .edit-server-card .label :last-child {
+        margin-left: 1rem;
+    }
+
+    .edit-server-card .online-label {
+        display: inline-block;
+        margin-right: 0.5rem;
+        font-weight: 600;
+    }
+
+    .edit-server-card .edit-form-buttons {
+        display: flex;
+    }
+
+/* Utlity classes */
+
+:where(.flow > :not(:first-child)) {
+    margin-top: 1rem;
+}
+
+.button-link {
+    display: inline-block;
+    width: 2.5rem;
+    margin-inline: auto;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    border-radius: 5px;
+    color: slategrey;
+    background: palegoldenrod;
+    box-shadow: 1px 1px 1px 1px rgb(33 33 33 / 0.5);
+}
+
+.button-submit {
+    width: fit-content;
+    margin-inline: auto;
+    padding: 0.2rem 0.5rem;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 5px;
+    color: darkblue;
+    background: lightblue;
+}

@@ -1,0 +1,75 @@
+﻿@page "/servers/{id:int}"
+@using System.Diagnostics
+
+@inject NavigationManager Navigation
+
+<PageTitle>Edit Server</PageTitle>
+
+<h2 class="page-title">Edit Server</h2>
+
+@if (server is not null && city is not null)
+{
+
+    <EditForm Model="server" FormName="formServer" OnValidSubmit="Submit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <InputNumber @bind-Value="server.ServerId" hidden></InputNumber>
+
+        <div class="edit-server-card">
+            <h4 class="card-title">Server Details</h4>
+            <div class="server-name label">
+                <p>Name</p>
+                <InputText @bind-Value="server.Name"></InputText>
+            </div>
+            <div class="city-name label">
+                <p>City</p>
+                <InputText @bind-Value="server.City"></InputText>
+            </div>
+            <div class="country-name label">
+                <p>Country</p>
+                <p>@city.Country</p>
+            </div>
+            <div class="server-status">
+                <p class="online-label">Online</p>
+                <InputCheckbox @bind-Value="server.IsOnline"></InputCheckbox>
+            </div>
+            <div class="edit-form-buttons">
+                <button class="button-submit" type="submit">Update</button>
+                <a class="button-link" href="/servers">Close</a>
+            </div>
+        </div>
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm(FormName = "formServer")]
+    private Server? server { get; set; }
+    private City? city;
+
+    private List<City> cities = CitiesRepository.GetCities();
+
+    protected override void OnParametersSet()
+    {
+        if (Id > 0)
+        {
+            server ??= ServersRepository.GetServerById(Id)
+                    ?? throw new ArgumentNullException(nameof(server));
+
+            city = cities.FirstOrDefault(c => c.Name == server.City);
+        }
+        else
+            throw new ArgumentOutOfRangeException(nameof(Id));
+    }
+
+    private void Submit()
+    {
+        if (server is not null)
+            ServersRepository.UpdateServer(server.ServerId, server);
+    }
+}
+
