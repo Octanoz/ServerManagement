@@ -1,5 +1,4 @@
 ﻿@page "/servers/{id:int}"
-@using System.Diagnostics
 
 @inject NavigationManager Navigation
 
@@ -7,28 +6,25 @@
 
 <h2 class="page-title">Edit Server</h2>
 
-@if (server is not null && city is not null)
+@if (server is not null)
 {
 
     <EditForm Model="server" FormName="formServer" OnValidSubmit="Submit">
         <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
 
         <InputNumber @bind-Value="server.ServerId" hidden></InputNumber>
 
         <div class="edit-server-card">
             <h4 class="card-title">Server Details</h4>
-            <div class="server-name label">
+            <div class="server-name label flow">
                 <p>Name</p>
                 <InputText @bind-Value="server.Name"></InputText>
+                <ValidationMessage For="() => server.Name"></ValidationMessage>
             </div>
-            <div class="city-name label">
+            <div class="city-name label flow">
                 <p>City</p>
                 <InputText @bind-Value="server.City"></InputText>
-            </div>
-            <div class="country-name label">
-                <p>Country</p>
-                <p>@city.Country</p>
+                <ValidationMessage For="() => server.City"></ValidationMessage>
             </div>
             <div class="server-status">
                 <p class="online-label">Online</p>
@@ -47,9 +43,8 @@
     [Parameter]
     public int Id { get; set; }
 
-    [SupplyParameterFromForm(FormName = "formServer")]
+    [SupplyParameterFromForm]
     private Server? server { get; set; }
-    private City? city;
 
     private List<City> cities = CitiesRepository.GetCities();
 
@@ -59,8 +54,6 @@
         {
             server ??= ServersRepository.GetServerById(Id)
                     ?? throw new ArgumentNullException(nameof(server));
-
-            city = cities.FirstOrDefault(c => c.Name == server.City);
         }
         else
             throw new ArgumentOutOfRangeException(nameof(Id));
@@ -70,6 +63,8 @@
     {
         if (server is not null)
             ServersRepository.UpdateServer(server.ServerId, server);
+
+        Navigation.NavigateTo("/servers");
     }
 }
 

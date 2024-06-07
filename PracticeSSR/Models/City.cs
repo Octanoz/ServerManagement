@@ -1,9 +1,15 @@
 ﻿namespace PracticeSSR.Models;
 
-public class City(string name = "Nulltown", string country = "Republic of Null", string? image = null)
+public class City
 {
+    public string Name { get; set; }
+    public string Country { get; set; }
+    public string? Image { get; set; }
 
-    public required string Name { get; set; } = name;
-    public required string Country { get; set; } = country;
-    public string? Image { get; set; } = image;
+    public City(string name, string country, string? image)
+    {
+        Name = name;
+        Country = country;
+        Image = image;
+    }
 }

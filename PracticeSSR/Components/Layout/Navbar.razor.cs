@@ -1,6 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Components;
-using static System.Net.WebRequestMethods;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace PracticeSSR.Components.Layout;
 

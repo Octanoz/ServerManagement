@@ -58,7 +58,7 @@ public static class ServersRepository
         Server? serverToUpdate = servers.Find(s => s.ServerId == serverId);
         if (serverToUpdate is not null)
         {
-            if (server.Name != serverToUpdate.Name && servers.Exists(s => s.Name == serverToUpdate.Name))
+            if (server.Name != serverToUpdate.Name && servers.Exists(s => s.Name == server.Name))
             {
                 Console.WriteLine($"A server with name {server.Name} already exists. Aborting update.");
                 return;
