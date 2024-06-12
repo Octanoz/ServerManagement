@@ -4,17 +4,17 @@
 
 <PageTitle>Edit Server</PageTitle>
 
-<h2 class="page-title">Edit Server</h2>
+<h2 class="page-header">Edit Server</h2>
 
 @if (server is not null)
 {
 
     <EditForm Model="server" FormName="formServer" OnValidSubmit="Submit">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <DataAnnotationsValidator />
 
         <InputNumber @bind-Value="server.ServerId" hidden></InputNumber>
 
-        <div class="edit-server-card">
+        <div class="server-card">
             <h4 class="card-title">Server Details</h4>
             <div class="server-name label flow">
                 <p>Name</p>
@@ -30,9 +30,9 @@
                 <p class="online-label">Online</p>
                 <InputCheckbox @bind-Value="server.IsOnline"></InputCheckbox>
             </div>
-            <div class="edit-form-buttons">
+            <div class="form-buttons">
                 <button class="button-submit" type="submit">Update</button>
-                <a class="button-link" href="/servers">Close</a>
+                <a class="button-link" href="/servers">Back</a>
             </div>
         </div>
     </EditForm>

@@ -19,11 +19,19 @@ public static class ServersRepository
         new() { ServerId = 13, Name = "Server13", City = "San Francisco" }
     ];
 
-    public static void AddServer(Server server)
+    public static bool AddServer(Server server)
     {
+        if (servers.Exists(s => s.Name == server.Name))
+        {
+            Console.WriteLine($"A server with name {server.Name} already exists. Aborting update.");
+            return false;
+        }
+
         int maxId = servers.Max(s => s.ServerId);
         server.ServerId = maxId + 1;
         servers.Add(server);
+
+        return true;
     }
 
     public static List<Server> GetServers() => servers;

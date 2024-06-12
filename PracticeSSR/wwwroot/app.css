@@ -66,11 +66,18 @@ h1:focus {
 
 /* page headers */
 
-.page-title {
+.page-header {
     margin-block: 1rem;
 }
 
 /* servers page */
+
+.locations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
 
 .location-card {
     display: grid;
@@ -94,7 +101,12 @@ h1:focus {
     box-shadow: 2px 2px 3px 3px hsla(0 0 0 / 0.3);
 }
 
-.status-wrapper {
+.status-list {
+    margin: 1rem 0;
+    list-style: none
+}
+
+.status-list-wrapper {
     display: flex;
     gap: 2rem;
     align-items: center;
@@ -105,6 +117,11 @@ h1:focus {
     margin: 0.25rem;
     padding-inline: 0.5rem;
     color: bisque;
+}
+
+.add-server {
+    margin-left: 2.5rem;
+    padding-block: 0.5rem;
 }
 
 /* server details page */
@@ -149,7 +166,7 @@ h1:focus {
 
 /* edit server page */
 
-.edit-server-card {
+.server-card {
     display: grid;
     gap: 0.75rem;
     width: fit-content;
@@ -161,25 +178,25 @@ h1:focus {
     box-shadow: 3px 3px 8px 4px rgb(33 33 33 / 0.5);
 }
 
-    .edit-server-card .card-title {
+    .server-card .card-title {
         margin-bottom: 1rem;
     }
 
-    .edit-server-card .label :first-child {
+    .server-card .label :first-child {
         font-weight: 600;
     }
 
-    .edit-server-card .label :last-child {
+    .server-card .label :last-child {
         margin-left: 1rem;
     }
 
-    .edit-server-card .online-label {
+    .server-card .online-label {
         display: inline-block;
         margin-right: 0.5rem;
         font-weight: 600;
     }
 
-    .edit-server-card .edit-form-buttons {
+    .server-card .form-buttons {
         display: flex;
     }
 

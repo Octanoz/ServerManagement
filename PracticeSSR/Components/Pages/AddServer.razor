@@ -1,0 +1,54 @@
+﻿@page "/servers/add"
+
+@inject NavigationManager Navigation
+
+<PageTitle>Add Server</PageTitle>
+
+<h2 class="page-header">Add a Server</h2>
+
+<EditForm Model="server" FormName="addServerForm" OnValidSubmit="Submit">
+    <DataAnnotationsValidator />
+    <div class="server-card">
+        <h4 class="card-title">Enter Server Details:</h4>
+        <div class="server-name label flow">
+            <p>Name</p>
+            <InputText @bind-Value="server!.Name"></InputText>
+            <ValidationMessage For="() => server.Name" />
+        </div>
+        <div class="city-name label flow">
+            <p>City</p>
+            <InputText @bind-Value="server.City"></InputText>
+            <ValidationMessage For="() => server.City" />
+        </div>
+        <div class="form-buttons">
+            <button class="button-submit" type="submit">Save</button>
+            <a class="button-link" href="/servers">Back</a>
+        </div>
+    </div>
+</EditForm>
+
+
+
+@code {
+    [SupplyParameterFromForm]
+    private Server? server { get; set; } = new() { IsOnline = false } ;
+
+    private List<City> cities = CitiesRepository.GetCities();
+
+    private void Submit()
+    {
+        // Server newServer = new() { Name = server.Name, City = server.City, IsOnline = server.IsOnline };
+        if (server is not null)
+        {
+            bool success = ServersRepository.AddServer(server);
+
+            if (!success)
+            {
+                Console.WriteLine($"Unable to save server because a server with the name {server.Name} already exists.");
+            }
+            else Navigation.NavigateTo("/servers");
+
+
+        }
+    }
+}

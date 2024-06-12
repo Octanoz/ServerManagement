@@ -1,0 +1,26 @@
+﻿@inject NavigationManager Navigation
+
+<div class="status-list-wrapper">
+    <p class="server-status-bar" style="background: @(Srvr.IsOnline ? "olivedrab" : "firebrick")">
+        @Srvr.Name - status: @(Srvr.IsOnline ? "online" : "offline") - last checked at @DateTime.Now.Subtract(halfHour).ToString()
+    </p>
+    <a class="server-link" href="/servers/@Srvr.ServerId">Edit Server</a>
+    <a class="server-link" href="/serverdetails/@Srvr.ServerId">Status Details</a>
+    <button type="submit" class="city-button" @onclick="DeleteServer">Delete</button>
+</div>
+
+@code {
+    [Parameter]
+    public Server? Srvr { get; set; }
+
+    private TimeSpan halfHour = new(0, 30, 0);
+
+    private void DeleteServer()
+    {
+        if (Srvr is not null)
+        {
+            ServersRepository.DeleteServer(Srvr.ServerId);
+            Navigation.Refresh();
+        }
+    }
+}

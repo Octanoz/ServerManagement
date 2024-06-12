@@ -1,0 +1,37 @@
+﻿@inject NavigationManager Navigation
+
+@if (ServerList is not null)
+{
+    <ul class="status-list">
+        @foreach (var serv in ServerList)
+        {
+            //How do the comments look?
+            <li class="status-list-wrapper">
+                <p class="server-status-bar" style="background: @(serv.IsOnline ? "olivedrab" : "firebrick")">
+                    @serv.Name - status: @(serv.IsOnline ? "online" : "offline") - last checked at @DateTime.Now.Subtract(halfHour).ToString()
+                </p>
+                <a class="server-link" href="/servers/@serv.ServerId">Edit Server</a>
+                <a class="server-link" href="/serverdetails/@serv.ServerId">Status Details</a>
+                <EditForm Model="serv" FormName="@($"delete-{serv.ServerId}")" OnValidSubmit="@(() => DeleteServer(serv.ServerId))" Enhance>
+                    <button type="submit" class="city-button">Delete</button>
+                </EditForm>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public List<Server>? ServerList { get; set; }
+
+    private TimeSpan halfHour = new(0, 30, 0);
+
+    private void DeleteServer(int id)
+    {
+        if (id > 0)
+        {
+            ServersRepository.DeleteServer(id);
+            Navigation.Refresh();
+        }
+    }
+}

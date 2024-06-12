@@ -7,7 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Pages\ServerStatus.razor" />
+    <Content Remove="Components\ServersStatusList.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\ServersStatusList.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\ServerStatus.razor" />
+    <_ContentIncludedByDefault Remove="Components\ServersStatusList.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Reusable\ServerStatus.razor" />
+    <None Include="Components\Reusable\ServersStatusList.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\ServerStatus.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,53 +1,62 @@
 ﻿@page "/servers"
 @using System.Globalization
 
+@inject NavigationManager Navigation
+
 <PageTitle>Server Overview</PageTitle>
 
-<h2 class="page-title">Servers</h2>
+<h2 class="page-header">Servers</h2>
 
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;">
+<div class="locations">
     @foreach (var city in cities)
     {
         <div class="location-card">
             <img src="@city.Image" width="100px" height="100px" alt="@city.Name" />
-            <button type="button" class="city-button" @onclick="() => SetCity(city.Name)">
-                @city.Name
-            </button>
+            <EditForm Model="city" FormName="@($"change-city-{city.Name}")" OnValidSubmit="@(() => { SetCity(city.Name); })">
+                <button type="submit" class="city-button">
+                    @city.Name
+                </button>
+            </EditForm>
         </div>
     }
 </div>
 
+@* @if (servers is not null)
+{
+    <ServersStatusList ServerList=@servers />
+} *@
+
 @if (servers is not null)
 {
-    <ul style="margin: 1rem 0; list-style: none">
-        @foreach (var serv in servers)
-        {
-            <li class="status-wrapper">
-                <p class="server-status-bar" style="background: @(serv.IsOnline ? "olivedrab" : "firebrick")">
-                    @serv.Name - status: @(serv.IsOnline ? "online" : "offline") - last checked at @DateTime.Now.Subtract(halfHour).ToString()
-                </p>
-                <a class="server-link" href="/servers/@serv.ServerId">Edit Server</a>
-                <a class="server-link" href="/serverdetails/@serv.ServerId">Status Details</a>
-            </li>
-        }
+    <ul class="status-list">
+    @foreach (var serv in servers)
+    {
+        <li>
+            <ServerStatus Srvr=@serv />
+        </li>
+    }
     </ul>
 }
 
+<a class="city-button add-server" href="/servers/add">Add a Server</a>
+
 @code {
-    private List<City> cities = CitiesRepository.GetCities();
-    private List<Server>? servers;
+    private List<City> cities = [];
+    private List<Server> servers = [];
+
+    private string selectedCity = "Amsterdam";
 
     protected override void OnInitialized()
     {
-        servers = ServersRepository.GetServersByCity("Amsterdam");
+        cities = CitiesRepository.GetCities();
+        servers = ServersRepository.GetServersByCity(selectedCity);
     }
 
     private void SetCity(string city)
     {
-        servers = ServersRepository.GetServersByCity(city);
+        selectedCity = city;
+        servers = ServersRepository.GetServersByCity(selectedCity);
         StateHasChanged();
     }
-
-    private TimeSpan halfHour = new(0, 30, 0);
 
 }
