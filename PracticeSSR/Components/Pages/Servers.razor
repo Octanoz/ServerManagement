@@ -32,7 +32,7 @@
     @foreach (var serv in servers)
     {
         <li>
-            <ServerStatus Srvr=@serv />
+            <ServerStatus @rendermode="InteractiveServer" Srvr=@serv/>
         </li>
     }
     </ul>
@@ -49,6 +49,7 @@
     protected override void OnInitialized()
     {
         cities = CitiesRepository.GetCities();
+
         servers = ServersRepository.GetServersByCity(selectedCity);
     }
 
